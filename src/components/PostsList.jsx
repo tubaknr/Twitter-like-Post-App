@@ -1,9 +1,8 @@
 // React Router client-side'da çalışır, backend'de değil.
 import { useState, useEffect } from "react";
+import { useLoaderData } from "react-router-dom"; // Bir üstündeki RouterDan gelen datayaı kullanabilmesi gerek!!!! (Posts.jsx'deng elen resData.posts)
 import Post from "./Post";
 import classes from "./PostList.module.css";
-import NewPost from "./NewPost";
-import Modal from "./Modal";
 
 function PostsList({isPosting, onStopPosting}){
     // Lifting state up 
@@ -24,8 +23,11 @@ function PostsList({isPosting, onStopPosting}){
         // setPosts(data.posts));
         // INFITNITE LOOP OLMASIN DİYE: USEFFECT()
 
-    const [ posts, setPosts ] = useState([]);
-    const [ isFetching, setIsFetching ] = useState(false);
+    const posts = useLoaderData(); // Bir üstündeki RouterDan gelen datayaı kullanabilmesi için.
+    //  DATA FETCHED HERE.
+    // SO WE DONT NEED POSTS STATE:
+    // const [ posts, setPosts ] = useState([]);
+    // const [ isFetching, setIsFetching ] = useState(false);
 
     useEffect(() => { //bu useEffect, her zaman execute edilmiyor. React karar veriyor ne zaman execute edileceğini..
         async function fetchPosts(){
@@ -65,21 +67,21 @@ function PostsList({isPosting, onStopPosting}){
     }
 
 
-    let modalContent;
-    if(isPosting){ //App.jsx->modalIsVisible
-        modalContent = 
-            (<Modal onClose={onStopPosting}>
-                <NewPost 
-                    // onBodyChange={bodyChangeHandler} 
-                    // onAuthorChange={authorChangeHandler}
-                    onCancel={onStopPosting}
-                    onAddPost={addPostHandler}/>
-            </Modal>) 
-    }
+    // let modalContent;
+    // if(isPosting){ //App.jsx->modalIsVisible
+    //     modalContent = 
+    //         (<Modal onClose={onStopPosting}>
+    //             <NewPost 
+    //                 // onBodyChange={bodyChangeHandler} 
+    //                 // onAuthorChange={authorChangeHandler}
+    //                 onCancel={onStopPosting}
+    //                 onAddPost={addPostHandler}/>
+    //         </Modal>) 
+    // }
 
     return(
         <>
-        {modalContent}
+        {/* {modalContent} */}
         {!isFetching && posts.length > 0 &&
         <ul className={classes.posts}>
             {/* <Post author={author} body={enteredBody}/> */}
